@@ -1,10 +1,10 @@
 #!/usr/bin/octave -qf
 
 # entrancepupil.m
-# 
+#
 # Prints the radius of the entrance pupil for a given numerical aperture
 # and vice versa for several different geometries.
-# 
+#
 # Either the numerical aperture or radius of entrance pupil may be
 # specified.  It is up to the user to properly interpret the outptut.
 

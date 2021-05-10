@@ -7,7 +7,7 @@ CC = mpicc
 CFLAGS = -O3
 
 INCLUDE_PATH = -I$(WOODYHOME)/include
-LIBRARY_PATH = -L$(WOODYHOME)/lib 
+LIBRARY_PATH = -L$(WOODYHOME)/lib
 
 LIBS = -lm -lrt -lhdf5 -lz -lmatheval -lgsl -lgslcblas -lm
 

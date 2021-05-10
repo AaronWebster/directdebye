@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # scatterfile.pl
-# 
+#
 # Distributes the file $FILE among nodes specified in @donthave
 
 # file to distribute
