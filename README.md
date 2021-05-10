@@ -1,17 +1,18 @@
-COMPILING DIRECTDEBYE
----------------------
+# COMPILING DIRECTDEBYE
 
-In the directdebye directory, compiling should be as simple as typing
+In the `directdebye` directory, compiling should be as simple as typing
 
+```
 make clean
 make
+```
 
-directdebye works with mpicc, both GNU and Intel compilers have been tested
-and work fine.  Additional compiler flags (e.g. '-fast' for Intel) may be
-specified in the CFLAGS variable in the Makefile.
+`directdebye` works with mpicc, both GNU and Intel compilers have been tested
+and work fine.  Additional compiler flags (e.g. `-fast` for Intel) may be
+specified in the `CFLAGS` variable in the `Makefile`.
 
 In addition to the standard set of libraries, the following are required
-for compilation and must be in your $INCLUDE_PATH and $LIBRARY_PATH:
+for compilation and must be in your `INCLUDE_PATH` and `LIBRARY_PATH`:
 
 libgsl
 zlib
@@ -19,19 +20,17 @@ libhdf5
 libmatheval
 
 
+# OBTAINING RAYS
 
-OBTAINING RAYS
---------------
-
-directdebye operates on rays, which must be properly sampled and obtained
+`directdebye` operates on rays, which must be properly sampled and obtained
 from an external program.  This document assumes you are working with
 RAYTRACE, but any program which provides the same output is acceptable.
 
 There are three types of programs in this directory:
 
-1.	directdebye itself, written in C and compiled with mpicc.
+1.  `directdebye` itself, written in C and compiled with mpicc.
 2.  Supporting scripts in the ./scripts directory
-3.  Scripts in the base directory for compiling and launching directdebye.
+3.  Scripts in the base directory for compiling and launching `directdebye`.
 
 First, create an optical system in RAYTRACE.  If you want a certain
 entrance pupil radius or certain numerical aperture, the script
@@ -41,7 +40,7 @@ by first tracing some rays at the center wavelength and then looking at the
 output of Evaluation->Foci->perpendicular (2D).  Then the whole system is
 moved by selecting every element, right click -> move, and entering the
 negative of the value in the "z (in mm)" column of the "2D-foci of the
-object points" window.  If you do not do this, directdebye can do it for
+object points" window.  If you do not do this, `directdebye` can do it for
 you with the --move-focus option.
 
 Under the light source properties, make sure the entrance pupil type is
@@ -81,7 +80,7 @@ of this file is
 
 all units are in millimeters.  Note that if a particular value such as the
 apodization factor or the ray intensity is not specified, its value should
-be unity.  These factors can be specified upon executing directdebye.
+be unity.  These factors can be specified upon executing `directdebye`.
 
 The script getrays.sh provides a convenient way of getting the ray file
 from a directory, appending some ones on to the end if need be, and copying
@@ -102,7 +101,7 @@ gcc linspace.c -o linspace
 and move into your $HOME/bin or /usr/local/bin (or wherever you please as
 long as it's in your path).
 
-Make a subdirectory, compile directdebye, and move the executable into it.
+Make a subdirectory, compile `directdebye`, and move the executable into it.
 Also, copy the file "run.sh" and your ray file into the subdirectory. 
 
 Since ray files tend to be quite large, it is important that each node have
@@ -113,10 +112,10 @@ device such as what's mounted on $FASTTMP, make a local copy of the ray
 file on each node.  The example script scatterfile.pl can help speed up
 this transfer.
 
-The main script for executing directdebye is called "run.sh".  proceed to
-edit this file.  This exemplifies only one of many ways directdebye can be
+The main script for executing `directdebye` is called "run.sh".  proceed to
+edit this file.  This exemplifies only one of many ways `directdebye` can be
 run.  The default operation of "run.sh" is to create many different
-scripts which run directdebye, each operating on one specific time slice.
+scripts which run `directdebye`, each operating on one specific time slice.
 
 First, change the variable $RAYFILE to reflect the name of the ray file.  This
 script assumes this file is copied to $FASTTMP (and will copy it for you if
@@ -131,7 +130,7 @@ This means that the program will run for 7 different time slices ranging
 from -6.671281905e-13 to 6.671281905e-13 seconds, inclusive.  Change these
 values to reflect the time slices you wish to calculate.
 
-The next lines worth editing are the actual arguments to directdebye.
+The next lines worth editing are the actual arguments to `directdebye`.
 Let's go through them one by one and explain what they do:
 
 --efield-out=1:50:100:1
@@ -226,8 +225,9 @@ which may have occurred.
 
 DIRECTDEBYE OUTPUT
 ------------------
-Let's examine the output of a typical run of directdebye
+Let's examine the output of a typical run of `directdebye`
 
+```
 h5ls ./example.h5
 
 e2                       Dataset {1, 500, 1000, 1}
@@ -247,16 +247,19 @@ ez.r                     Dataset {1, 500, 1000, 1}
 ez2                      Dataset {1, 500, 1000, 1}
 ez_phase                 Dataset {1, 500, 1000, 1}
 temporal_offset          Dataset {1}
+```
 
 Each HDF file contains several datasets, each with a different part of the
-electric field.  Note also that the boundary information (from --efield-ub
-and --efield-lb) is stored as a linear array in efield_lower_bounds and
-efield_upper_bounds.  
+electric field.  Note also that the boundary information (from `--efield-ub`
+and `--efield-lb`) is stored as a linear array in `efield_lower_bounds` and
+`efield_upper_bounds`. 
 
 To convert, say the e2 field to a PNG file, use the h5topng command (part
 of the h5tools package)
 
+```
 h5topng -c jet -t 0:0 -d e2 example.h5
+```
 
 For more options, see the man page for h5topng.  There are many other tools
 (h5math, h5topng, h5totxt) which are useful for manipulating HDF files.
@@ -266,9 +269,11 @@ was mentioned.  If not taken explicitly into account in the ray intensity,
 the output will only be qualitative.  Using the h5math command however,
 this can be done explicitly.  For example:
 
+```
 h5math -d e2 -e "d1/(0.25*0.25)" example_adjusted.h5 example.h5
+```
 
 This will multiply every member of the e2 dataset of the file example.h5 by
-1/(0.25*0.25), and produce a new file, example_adjusted.h5.  See the h5math
+$1/(0.25*0.25)$, and produce a new file, example_adjusted.h5.  See the h5math
 manual for more information.
 
