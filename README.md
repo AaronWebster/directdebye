@@ -23,6 +23,12 @@ libhdf5
 libmatheval
 ```
 
+On Debian
+
+```
+apt install libgsl-dev libmatheval-dev  libhdf5-dev
+```
+
 ## OBTAINING RAYS
 
 `directdebye` operates on rays, which must be properly sampled and obtained
