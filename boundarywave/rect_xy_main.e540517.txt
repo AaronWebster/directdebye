@@ -1,0 +1,19 @@
+read 286720 rays from /wsfs/mpo1/mpo1216/rect.txt
+efield dimensions x:y:z:t   512:512:1:1
+efield lower bounds x,y,z,t -0.01:-0.01:0.0159597:-5.3333e-14
+efield upper bounds x:y:z:t 0.01:0.01:1:10
+temporal offset:	-8.57054e-14
+output will consist of
+	ex
+	ey
+	ez
+	|ex|^2
+	|ey|^2
+	|ez|^2
+	|e|^2
+output file:	rect_xy_main.h5
+pulse envelope:
+sqrt(4e-15*sqrt(pi)/sqrt(ln2))*exp(-(x-2354564459136066.560)*(x-2354564459136066.560)*4e-15*4e-15*0.125/ln2)
+apodization function :
+0.5*(1+cos(x))
+wrote rect_xy_main.h5

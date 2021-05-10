@@ -1,0 +1,89 @@
+.\" Copyright 2011
+.TH directdebye 1 "17 October 2010"
+.SH NAME
+directdebye \- computes the discrete Debye integral from raytracing data.
+.SH SYNOPSIS
+\fBdirectdebye\fR [\fIOPTIONS\fR]
+
+.SH DESCRIPTION
+Computes the Debye integral as a discrete sum over input ray data using the
+trapezoidal rule.  The program expects the ray data to be a tab separated
+file with the following fields:
+
+.nf
+0  1  2   ray position px py pz
+3  4  5   normalized ray direction ex ey ez
+6  7      polarization in x (real, complex)
+8  9      polarization in y (real, complex)
+10 11     polarization in z (real, complex)
+12        wavelength
+13        apodization factor
+14        ray intensity for the particular wavelength
+.fi
+
+The output is a four dimensional HDF file in x, y, z and t.
+
+directdebye uses MPI to distribute its calculation amongst multiple
+processors.  Since direct computation of the Debye integral takes O(n^2)
+operations, it is recommended the program be run in an environment which
+can take advantage of this.
+.SH OPTIONS
+.TP
+\fB--efield-out \fIx\fR:\fIy\fR:\fIz\fR:\fIt\fR
+Size of the output array in pixels.
+.TP
+\fB--efield-ub\fR \fIx\fR:\fIy\fR:\fIz\fR:\fIt\fR 
+Upper bounds, in millimeters, for each dimension of the output array.
+.TP
+\fB--efield-ub\fR \fIx\fR:\fIy\fR:\fIz\fR:\fIt\fR 
+Lower bounds, in millimeters, for each dimension of the output array.
+.TP
+\fB--output-file\fI file
+Output will be written to the HDF file \fIfile\fR.  Default is
+`efield-out.h5'.
+.P The output can be controlled by the following specifications:
+.TP
+.B --output-e\fIn\fR2
+Output the complex vectorial component of the field |e\fIn\fR|^2.  \fIn\fR
+can be x, y, or z.  Default is to output all components.
+.TP
+.B --output-e\fIn\fR\fB
+Output the complex vectorial field e\fIn\fR.  \fIn\fR can be x, y, or z.
+Default is to output all components.
+.TP
+.B --output-phase-e\fIn\fR\fB
+Output the phase of the vectorial field e\fIn\fR.  \fIn\fR can be x, y, or
+z.  Default is to output all components.
+.TP
+\fB--temporal-offset\fI offset
+Temporal offset.  Use this parameter to make t=0 at the center of the
+coordinate system.  Default is 0.
+.TP
+\fB--radius\fI radius 
+Radius of the focal sphere.  Not mandatory.  If not given, the output will
+only be qualitatively correct.  Default is 1.
+.TP
+\fB--pulse-function\fI f(x)
+Specify the pulse envelope manually.  Causes the `ray intensity' field
+(column 14) of the input file to be multiplied by the function
+\fIf(x)\fR, where x is in units of 2*pi*c_0/lambda; c_0 is the speed of
+light in meters per second and lambda is the parameter specified in the
+ray input file.  The string given can be any 
+function in x supported by libmatheval.  If no function is
+given it is assumed the envelope is specified in terms of the `ray
+intensity' field.
+.TP
+\fB--apodization-function\fI f(x)
+Specify the apodization function manually.  Causes the `apodization factor'
+field (column 13) of the input file to be multiplied by the function
+\fIf(x)\fR, where x is the angle a ray makes with the optical axis
+(computed internally as acos(pz/radius)).  The string given can be any
+function in x supported by libmatheval.  If no function is given it is
+assumed the envelope is specified in terms of the `apodization factor'
+field.
+
+.SH BUGS
+Send bug reports to Aaron Webster <aaron.webster@physik.uni-erlangen.de>
+.SH AUTHORS
+Written by Aaron Webster.  Copyright (c) 2011 Max Planck Institute for the
+Science of Light and University of Erlangen Nuremberg, Erlangen, Germany 
