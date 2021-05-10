@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # run-example.sh
-# 
+#
 # Runs directdebye for different timesteps and submits them as jobs to
 # torque.
 
@@ -10,10 +10,9 @@ RAYFILE="rrays.txt"
 
 # generate different files for submission
 J=0
-for I in $(linspace -6.671281905e-13 6.671281905e-13 7)
-do
-	touch `printf %.4d $J`-parabola-qsub.sh 
-	cat << EOF > `printf %.4d $J`-parabola-qsub.sh
+for I in $(linspace -6.671281905e-13 6.671281905e-13 7); do
+  touch $(printf %.4d $J)-parabola-qsub.sh
+  cat << EOF > $(printf %.4d $J)-parabola-qsub.sh
 #!/bin/bash
 #PBS -N directdebye-parabola_$J
 #PBS -o parabola_$J.log
@@ -35,27 +34,24 @@ time /usr/bin/mpirun -v -machinefile \$PBS_NODEFILE -np \$NPROCS \\
 --efield-ub=1:0.1:0.2:10 \\
 --radius=50.0 \\
 --temporal-offset=3.9928428404523743911e-14 \\
---output-file="`printf %.4d $J`-parabola-$I.h5" \\
+--output-file="$(printf %.4d $J)-parabola-$I.h5" \\
 --pulse-function='"sqrt(40e-15*sqrt(pi)/sqrt(ln2))*exp(-(x-2354564459136066)*(x-2354564459136066)*40e-15*40e-15*0.125/ln2)"' \\
 --apodization-function='"0.5*(1+cos(x))"' \\
 $FASTTMP/$RAYFILE
 
 EOF
-	let J=$J+1
+  let J=$J+1
 done
 
 # want to make sure $RAYFILE is in fasttmp
-if [ -e $FASTTMP/$RAYFILE ]
-then
-	echo "$FASTTMP/$RAYFILE already exists"
+if [ -e $FASTTMP/$RAYFILE ]; then
+  echo "$FASTTMP/$RAYFILE already exists"
 else
-	cp $RAYFILE $FASTTMP/$RAYFILE
-	echo "moved $RAYFILE to $FASTTMP"
+  cp $RAYFILE $FASTTMP/$RAYFILE
+  echo "moved $RAYFILE to $FASTTMP"
 fi
 
-
 # submit
-for FILE in *parabola-qsub.sh
-do
-	qsub -l nodes=16:ppn=4 $FILE
+for FILE in *parabola-qsub.sh; do
+  qsub -l nodes=16:ppn=4 $FILE
 done
