@@ -1,46 +1,29 @@
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> /* command line arguments, get memory */
-#include <getopt.h> /* command line arguments */
+#include <unistd.h>
+
+int Usage() {
+  fprintf(stderr, "Usage: linspace <min> <max> <samples>\n");
+  return EXIT_SUCCESS;
+}
 
 int main(int argc, char **argv) {
-	if(argc<3){
-		fprintf(stderr,"Usage: linspace <min> <max> <samples>\n");
-		return 0;
-	}
+  if (argc < 3) return Usage();
 
-	double lb,ub;
-	unsigned int n;
+  double lb;
+  double ub;
+  int n;
+  if (sscanf(argv[1], "%lg", &lb) < 1) return Usage();
+  if (sscanf(argv[2], "%lg", &ub) < 1) return Usage();
+  if (sscanf(argv[3], "%d", &n) < 1) return Usage();
 
-	int er;
+  double dn = (n == 1) ? (ub - lb) / (double)(n) : (ub - lb) / (double)(n - 1);
 
-	er = sscanf(argv[1],"%lg",&lb);
-	if(er<1){
-		fprintf(stderr,"Usage: linspace <min> <max> <samples>\n");
-		return 0;
-	}
-	er = sscanf(argv[2],"%lg",&ub);
-	if(er<1){
-		fprintf(stderr,"Usage: linspace <min> <max> <samples>\n");
-		return 0;
-	}
-	er = sscanf(argv[3],"%d",&n);
-	if(er<1){
-		fprintf(stderr,"Usage: linspace <min> <max> <samples>\n");
-		return 0;
-	}
+  int i;
+  for (i = 0; i < n; i++) {
+    printf("%.20g\n", lb + dn * (double)i);
+  }
 
-	double dn;
-	if(n==1){
-		dn = (ub-lb)/(double)(n);
-	}
-	else{
-		dn = (ub-lb)/(double)(n-1);
-	}
-
-	unsigned int i;
-	for(i=0;i<n;i++){
-		printf("%.20g\n",lb+dn*(double)i);
-	}
-	return 0;
+  return EXIT_SUCCESS;
 }
