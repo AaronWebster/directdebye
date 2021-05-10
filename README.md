@@ -1,4 +1,6 @@
-# COMPILING DIRECTDEBYE
+# DIRECTDEBYE
+
+## COMPILING
 
 In the `directdebye` directory, compiling should be as simple as typing
 
@@ -14,13 +16,14 @@ specified in the `CFLAGS` variable in the `Makefile`.
 In addition to the standard set of libraries, the following are required
 for compilation and must be in your `INCLUDE_PATH` and `LIBRARY_PATH`:
 
+```
 libgsl
 zlib
 libhdf5
 libmatheval
+```
 
-
-# OBTAINING RAYS
+## OBTAINING RAYS
 
 `directdebye` operates on rays, which must be properly sampled and obtained
 from an external program.  This document assumes you are working with
@@ -68,6 +71,7 @@ will run and many different frequency components will be traced.  The
 output will be saved as a tab separated values file "rays.txt".  The output
 of this file is 
 
+```
 0  1  2   ray position px py pz
 3  4  5   normalized ray direction ex ey ez
 6  7      polarization in x (real, complex)
@@ -77,6 +81,7 @@ of this file is
 13        wavelength
 14        apodization factor
 15        ray intensity for the particular wavelength
+```
 
 all units are in millimeters.  Note that if a particular value such as the
 apodization factor or the ray intensity is not specified, its value should
@@ -87,8 +92,8 @@ from a directory, appending some ones on to the end if need be, and copying
 them to the local directory.
 
 
-RUNNING DIRECTDEBYE
--------------------
+## RUNNING
+
 The following assumes you are running the program on an MPI capable cluster
 running torque (Here in Erlangen woody, lima, etc.)
 
@@ -96,7 +101,9 @@ As a prerequisite, in the 'extras' directory there is a program called
 linspace.  This functions much the same way as the matlab/octave function
 linspace, but is written in C.  Compile this program:
 
+```
 gcc linspace.c -o linspace
+```
 
 and move into your $HOME/bin or /usr/local/bin (or wherever you please as
 long as it's in your path).
@@ -124,7 +131,9 @@ directory of the ray file if running on a different kind of cluster.
 
 Next, note the line 
 
+```
 for I in $(linspace -6.671281905e-13 6.671281905e-13 7)
+```
 
 This means that the program will run for 7 different time slices ranging
 from -6.671281905e-13 to 6.671281905e-13 seconds, inclusive.  Change these
@@ -223,8 +232,8 @@ These contain information about how the program was invoked and any errors
 which may have occurred.
 
 
-DIRECTDEBYE OUTPUT
-------------------
+## OUTPUT
+
 Let's examine the output of a typical run of `directdebye`
 
 ```
@@ -274,6 +283,6 @@ h5math -d e2 -e "d1/(0.25*0.25)" example_adjusted.h5 example.h5
 ```
 
 This will multiply every member of the e2 dataset of the file example.h5 by
-$1/(0.25*0.25)$, and produce a new file, example_adjusted.h5.  See the h5math
+1/(0.25*0.25), and produce a new file, example_adjusted.h5.  See the h5math
 manual for more information.
 
