@@ -26,7 +26,7 @@ libmatheval
 On Debian
 
 ```
-apt install libgsl-dev libmatheval-dev  libhdf5-dev
+apt install libgsl-dev libmatheval-dev libhdf5-dev
 ```
 
 ## OBTAINING RAYS
