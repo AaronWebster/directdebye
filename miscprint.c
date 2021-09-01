@@ -1,9 +1,6 @@
-/* miscprint.c
- * pretty print different datas to stderr
- */
-
 #include "miscprint.h"
 
+// Print program usage.
 void print_usage(void) {
   fprintf(stderr, "Usage: ./directdebye [OPTIONS] RAYFILE\n");
   fprintf(stderr,

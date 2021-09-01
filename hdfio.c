@@ -1,4 +1,3 @@
-// Functions for (reading) and writing HDF files.
 #include "hdfio.h"
 
 #include "parseargs.h"

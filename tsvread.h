@@ -1,12 +1,13 @@
+#ifndef TSVREAD_H
+#define TSVREAD_H
+
 #include <errno.h>
 #include <error.h>
 #include <malloc.h>
-#include <stdio.h>  /* gets */
-#include <stdlib.h> /* atoi, malloc */
-#include <string.h> /* strcpy */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#ifndef INC_TSVREAD_H
-#define INC_TSVREAD_H
 /* holds the data we read from the file */
 typedef struct {
   double **data; /* two dimensional array of data */
@@ -16,4 +17,5 @@ typedef struct {
 
 void tsv_free(tsv_t *tsv);
 tsv_t *tsv_fread(char *filename);
-#endif
+
+#endif  // TSVREAD_H

@@ -1,8 +1,3 @@
-/* tsvread.c
- * reads data from a tab seperated values file and returns a struct
- * describing that data
- */
-
 #include "tsvread.h"
 
 /* read a tsv file given a filename */

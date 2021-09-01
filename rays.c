@@ -1,6 +1,3 @@
-/* rays.c
- * functions for dealing with rays
- */
 #include "rays.h"
 
 /* compare doubles for qsort */
